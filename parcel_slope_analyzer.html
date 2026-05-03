@@ -67,7 +67,7 @@
     /* ── App layout ────────────────────────────────────────────────────────── */
     #app { display: none; height: 100vh; flex-direction: row; }
 
-    #map { flex: 1; }
+    #map { flex: 1; position: relative; }
     .sidebar {
       width: 310px;
       background: #161b22;
@@ -228,9 +228,8 @@
 
 <!-- ── App ───────────────────────────────────────────────────────────────────── -->
 <div id="app">
-  <div id="map">
-    <div id="map-hint">Click any parcel to analyze slope</div>
-  </div>
+  <div id="map"></div>
+  <div id="map-hint">Click any parcel to analyze slope</div>
 
   <div class="sidebar">
     <div class="s-head">
@@ -364,7 +363,7 @@ function clearToken() {
 function launchApp() {
   document.getElementById('token-overlay').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
-  initMap();
+  requestAnimationFrame(() => requestAnimationFrame(() => initMap()));
 }
 
 // ── Map initialisation ─────────────────────────────────────────────────────────
