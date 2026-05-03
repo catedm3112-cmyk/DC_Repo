@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TruTerra — Parcel Slope Analyzer</title>
-  <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
-  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -17,57 +17,11 @@
       overflow: hidden;
     }
 
-    /* ── Token overlay ─────────────────────────────────────────────────────── */
-    #token-overlay {
-      position: fixed; inset: 0;
-      background: #0d1117;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999;
-    }
-    .tk-card {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 12px;
-      padding: 32px 36px;
-      max-width: 440px; width: 92%;
-    }
-    .tk-logo { font-size: 20px; font-weight: 700; color: #58a6ff; margin-bottom: 4px; }
-    .tk-sub  { font-size: 12px; color: #8b949e; margin-bottom: 20px; }
-    .tk-note {
-      background: #161b22;
-      border: 1px solid #3d2a00;
-      border-radius: 6px;
-      padding: 10px 12px;
-      font-size: 11px; color: #d29922;
-      margin-bottom: 16px; line-height: 1.5;
-    }
-    .tk-label { font-size: 11px; color: #8b949e; margin-bottom: 6px; display: block; }
-    .tk-input {
-      width: 100%; padding: 9px 12px;
-      border: 1px solid #30363d; border-radius: 6px;
-      background: #0d1117; color: #e6edf3;
-      font-size: 12px; font-family: monospace;
-      margin-bottom: 12px;
-    }
-    .tk-input:focus { outline: none; border-color: #58a6ff; }
-    .tk-btn {
-      width: 100%; padding: 10px;
-      background: #238636; color: #fff;
-      border: none; border-radius: 6px;
-      font-size: 13px; font-weight: 600;
-      cursor: pointer;
-    }
-    .tk-btn:hover { background: #2ea043; }
-    .tk-session {
-      margin-top: 10px;
-      font-size: 11px; color: #8b949e; text-align: center;
-    }
-    .tk-session a { color: #58a6ff; cursor: pointer; }
-
     /* ── App layout ────────────────────────────────────────────────────────── */
     #app { display: none; height: 100vh; flex-direction: row; }
 
-    #map { flex: 1; }
+    .map-wrap { flex: 1; min-width: 0; position: relative; }
+    #map { position: absolute; inset: 0; }
     .sidebar {
       width: 310px;
       background: #161b22;
@@ -207,28 +161,10 @@
 </head>
 <body>
 
-<!-- ── Token overlay ─────────────────────────────────────────────────────────── -->
-<div id="token-overlay">
-  <div class="tk-card">
-    <div class="tk-logo">TruTerra</div>
-    <div class="tk-sub">Parcel Slope Analyzer — Sevier County, TN</div>
-    <div class="tk-note">
-      Use your Mapbox <strong>public</strong> token (pk.eyJ1…) only.<br>
-      Secret tokens (sk.) must never be used in browser code.
-    </div>
-    <label class="tk-label" for="tk-input">Mapbox Public Token</label>
-    <input id="tk-input" class="tk-input" type="text"
-           placeholder="pk.eyJ1…" autocomplete="off" spellcheck="false">
-    <button class="tk-btn" onclick="applyToken()">Load Map →</button>
-    <div class="tk-session" id="tk-session" style="display:none">
-      Token restored from session &mdash; <a onclick="clearToken()">change</a>
-    </div>
-  </div>
-</div>
-
 <!-- ── App ───────────────────────────────────────────────────────────────────── -->
 <div id="app">
-  <div id="map">
+  <div class="map-wrap">
+    <div id="map"></div>
     <div id="map-hint">Click any parcel to analyze slope</div>
   </div>
 
@@ -290,12 +226,36 @@
 <script>
 'use strict';
 
+const glMap = window.maplibregl;
+
 // ── Data sources ───────────────────────────────────────────────────────────────
 const PARCELS_FS   = 'https://services3.arcgis.com/cYPAijXv24o8BjFq/arcgis/rest/services/Parcel/FeatureServer/0';
 const CITY_LIMITS  = 'https://services1.arcgis.com/Qu4yM4JJvNoC2GKw/arcgis/rest/services/City_Limits_Sevier_County_TN/FeatureServer/0';
 const EPQS_BASE    = 'https://epqs.nationalmap.gov/v1/json';
 const GRID_SIZE    = 10;     // 10×10 = 100 sample points
 const LOAD_ZOOM    = 13;     // minimum zoom to show background parcel outlines
+const DEFAULT_STYLE = {
+  version: 8,
+  sources: {
+    'esri-world-imagery': {
+      type: 'raster',
+      tiles: [
+        'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      ],
+      tileSize: 256,
+      attribution: 'Tiles &copy; Esri',
+    },
+  },
+  layers: [
+    {
+      id: 'esri-world-imagery',
+      type: 'raster',
+      source: 'esri-world-imagery',
+      minzoom: 0,
+      maxzoom: 19,
+    },
+  ],
+};
 
 // ── Jurisdiction-specific slope band profiles ──────────────────────────────────
 const SLOPE_PROFILES = {
@@ -338,52 +298,39 @@ const SLOPE_PROFILES = {
 };
 
 // ── State ──────────────────────────────────────────────────────────────────────
-let TOKEN = '';
 let map   = null;
 let bgLoadTimer = null;
 let analysisInProgress = false;
-
-// ── Token management ───────────────────────────────────────────────────────────
-function applyToken() {
-  const val = document.getElementById('tk-input').value.trim();
-  if (!val) { alert('Please enter a Mapbox public token.'); return; }
-  if (val.startsWith('sk.')) {
-    alert('Secret tokens (sk.) must not be used in browser code.\nPlease enter your pk. public token.');
-    return;
-  }
-  TOKEN = val;
-  sessionStorage.setItem('truterra_pk', val);
-  launchApp();
-}
-
-function clearToken() {
-  sessionStorage.removeItem('truterra_pk');
-  location.reload();
-}
+let mapReady = false;
+let styleFallbackTimer = null;
+let lastMapWarning = '';
 
 function launchApp() {
-  document.getElementById('token-overlay').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
   initMap();
 }
 
 // ── Map initialisation ─────────────────────────────────────────────────────────
 function initMap() {
-  mapboxgl.accessToken = TOKEN;
-  map = new mapboxgl.Map({
+  map = new glMap.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/satellite-streets-v12',
+    style: DEFAULT_STYLE,
     center: [-83.523, 35.868],
     zoom: 12,
   });
 
-  map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+  map.addControl(new glMap.NavigationControl(), 'top-left');
   map.getCanvas().style.cursor = 'crosshair';
 
-  map.on('load', () => {
-    log('Map loaded — click any parcel to begin', 'info');
-    loadBgParcels();
-  });
+  map.on('load', markMapReady);
+  map.on('style.load', markMapReady);
+  map.on('error', handleMapError);
+
+  styleFallbackTimer = setTimeout(() => {
+    if (!mapReady) {
+      log('Basemap is still loading. Check your network if imagery stays blank.', 'warn');
+    }
+  }, 6000);
 
   // Background parcel outlines on pan/zoom
   map.on('moveend', () => {
@@ -392,6 +339,23 @@ function initMap() {
   });
 
   map.on('click', handleClick);
+}
+
+function markMapReady() {
+  if (mapReady) return;
+  mapReady = true;
+  clearTimeout(styleFallbackTimer);
+  log('Map loaded — click any parcel to begin', 'info');
+  loadBgParcels();
+}
+
+function handleMapError(event) {
+  const message = event?.error?.message || 'Unknown map error';
+  console.warn('Map warning:', event?.error || event);
+  if (message !== lastMapWarning) {
+    lastMapWarning = message;
+    log(`Basemap warning: ${message}`, 'warn');
+  }
 }
 
 // ── Background parcel outlines (visual reference) ──────────────────────────────
@@ -785,12 +749,12 @@ function renderBands(metrics, profile) {
   show('panel-bands');
 }
 
-// ── Mapbox layer helpers ───────────────────────────────────────────────────────
+// ── Map layer helpers ──────────────────────────────────────────────────────────
 let clickMarker = null;
 
 function addClickMarker(lng, lat) {
   if (clickMarker) clickMarker.remove();
-  clickMarker = new mapboxgl.Marker({ color: '#58a6ff', scale: 0.8 })
+  clickMarker = new glMap.Marker({ color: '#58a6ff', scale: 0.8 })
     .setLngLat([lng, lat])
     .addTo(map);
 }
@@ -884,8 +848,12 @@ function hideResultPanels() {
 function log(msg, type = 'info') {
   const el = document.getElementById('log');
   const d  = document.createElement('div');
+  const dot = document.createElement('div');
+  const text = document.createElement('span');
   d.className = `log-item ${type}`;
-  d.innerHTML = `<div class="log-dot"></div><span>${msg}</span>`;
+  dot.className = 'log-dot';
+  text.textContent = msg;
+  d.append(dot, text);
   el.appendChild(d);
   el.parentElement.scrollTop = el.parentElement.scrollHeight;
 }
@@ -893,13 +861,7 @@ function clearLog() { document.getElementById('log').innerHTML = ''; }
 
 // ── Bootstrap ──────────────────────────────────────────────────────────────────
 (function() {
-  const saved = sessionStorage.getItem('truterra_pk');
-  if (saved && !saved.startsWith('sk.')) {
-    TOKEN = saved;
-    document.getElementById('tk-input').value = saved;
-    document.getElementById('tk-session').style.display = 'block';
-    launchApp();
-  }
+  launchApp();
 })();
 </script>
 </body>
