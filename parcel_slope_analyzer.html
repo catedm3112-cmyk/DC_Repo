@@ -497,7 +497,7 @@ async function handleClick(e) {
 // ── ArcGIS helpers ─────────────────────────────────────────────────────────────
 async function arcgisQuery(url, params) {
   const p = new URLSearchParams(params);
-  const res = await fetch(`${url}/query?${p}`, { signal: AbortSignal.timeout(10000) });
+  const res = await fetch(`${url}/query?${p}`, { signal: AbortSignal.timeout(25000) });
   if (!res.ok) throw new Error(`ArcGIS HTTP ${res.status}`);
   const data = await res.json();
   if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
