@@ -3,33 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Parcel Slope Analyzer — Sevier County TN</title>
+  <title>Parcel Slope Analyzer - Sevier County TN</title>
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
   <style>
-    #token-overlay {
-      position: fixed; inset: 0; background: #0d1117;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999;
-    }
-    .token-box {
-      background: #16213e; border: 1px solid #0f3460;
-      border-radius: 12px; padding: 28px 32px; max-width: 420px; width: 90%;
-    }
-    .token-box h2 { font-size: 16px; margin-bottom: 8px; }
-    .token-box p { font-size: 12px; color: #888; margin-bottom: 16px; line-height: 1.5; }
-    .token-box input {
-      width: 100%; padding: 9px 12px; border-radius: 6px;
-      border: 1px solid #0f3460; background: #0d1a2e; color: #e0e0e0;
-      font-size: 12px; font-family: monospace; margin-bottom: 12px;
-    }
-    .token-box button {
-      background: #4fc3f7; color: #07090f; border: none;
-      padding: 9px 20px; border-radius: 6px; font-weight: 700;
-      cursor: pointer; font-size: 13px; width: 100%;
-    }
-    .token-box button:hover { background: #81d4fa; }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -40,7 +17,6 @@
       flex-direction: column;
       overflow: hidden;
     }
-
     header {
       background: #16213e;
       padding: 12px 20px;
@@ -49,23 +25,16 @@
     }
     header h1 { font-size: 17px; font-weight: 600; }
     header p { font-size: 11px; color: #888; margin-top: 2px; }
-
     .main { flex: 1; display: flex; overflow: hidden; }
-
     #map { flex: 1; }
-
     .sidebar {
-      width: 320px;
+      width: 340px;
       background: #16213e;
       border-left: 1px solid #0f3460;
       overflow-y: auto;
       flex-shrink: 0;
     }
-
-    .panel {
-      padding: 14px 16px;
-      border-bottom: 1px solid #0f3460;
-    }
+    .panel { padding: 14px 16px; border-bottom: 1px solid #0f3460; }
     .panel-title {
       font-size: 10px;
       font-weight: 700;
@@ -74,12 +43,10 @@
       color: #5b9bd5;
       margin-bottom: 10px;
     }
-
     .info-grid { display: grid; gap: 5px; }
     .info-row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
     .info-label { font-size: 11px; color: #777; white-space: nowrap; }
     .info-val { font-size: 11px; color: #ddd; text-align: right; font-family: 'SF Mono', 'Fira Code', monospace; }
-
     .metric-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
     .metric-card {
       background: #0d2137;
@@ -89,14 +56,7 @@
     }
     .metric-value { font-size: 22px; font-weight: 700; color: #4fc3f7; line-height: 1; }
     .metric-label { font-size: 10px; color: #666; margin-top: 4px; }
-
-    .status-log {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      max-height: 240px;
-      overflow-y: auto;
-    }
+    .status-log { display: flex; flex-direction: column; gap: 3px; max-height: 230px; overflow-y: auto; }
     .log-item {
       font-size: 11px;
       padding: 3px 8px 3px 6px;
@@ -111,36 +71,20 @@
     .log-item.success { background: #0d2818; color: #66bb6a; }
     .log-item.error   { background: #2d0d0d; color: #ef5350; }
     .log-item.warn    { background: #2d2200; color: #ffcc80; }
-
-    .dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      margin-top: 4px;
-    }
+    .dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
     .info .dot    { background: #555; }
     .running .dot { background: #7da0ca; animation: blink 1s infinite; }
     .success .dot { background: #66bb6a; }
     .error .dot   { background: #ef5350; }
     .warn .dot    { background: #ffcc80; }
-
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
-
     .legend-bar {
       height: 10px;
       border-radius: 5px;
-      background: linear-gradient(to right,
-        #1a9850 0%, #91cf60 25%, #d9ef8b 50%,
-        #fc8d59 75%, #d73027 100%);
+      background: linear-gradient(to right,#1a9850 0%,#91cf60 25%,#d9ef8b 50%,#fc8d59 75%,#d73027 100%);
       margin-bottom: 4px;
     }
-    .legend-ticks {
-      display: flex;
-      justify-content: space-between;
-      font-size: 10px;
-      color: #777;
-    }
-
+    .legend-ticks { display: flex; justify-content: space-between; font-size: 10px; color: #777; }
     .field-badge {
       display: inline-block;
       background: #1a3a2a;
@@ -153,7 +97,32 @@
       margin-top: 6px;
     }
     .field-badge.none { background: #2d0d0d; color: #ef5350; border-color: #5a2a2a; }
-
+    .bands { display: grid; gap: 6px; }
+    .band-row { display: grid; grid-template-columns: 62px 1fr 42px; align-items: center; gap: 8px; font-size: 11px; }
+    .band-track { height: 8px; border-radius: 4px; background: #0d2137; overflow: hidden; }
+    .band-fill { height: 100%; border-radius: 4px; background: #4fc3f7; width: 0%; }
+    .notice {
+      margin-top: 8px;
+      font-size: 10px;
+      line-height: 1.4;
+      color: #999;
+    }
+    #token-overlay {
+      position: fixed; inset: 0; background: #0d1117;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+    }
+    .token-box {
+      background: #16213e; border: 1px solid #0f3460;
+      border-radius: 12px; padding: 28px 32px; max-width: 460px; width: 90%;
+    }
+    .token-box h2 { font-size: 16px; margin-bottom: 8px; }
+    .token-box p { font-size: 12px; color: #888; margin-bottom: 16px; line-height: 1.5; }
+    .token-box input {
+      width: 100%; padding: 9px 12px; border-radius: 6px;
+      border: 1px solid #0f3460; background: #0d1a2e; color: #e0e0e0;
+      font-size: 12px; font-family: monospace; margin-bottom: 12px;
+    }
     button {
       width: 100%;
       padding: 9px;
@@ -173,147 +142,91 @@
 <body>
 <header>
   <h1>Parcel Slope Analyzer</h1>
-  <p>Sevier County, TN &mdash; ArcGIS parcel boundary + Mapbox Terrain-RGB elevation analysis</p>
+  <p>Sevier County, TN - ArcGIS parcel boundary + USGS 3DEP elevation point sampling</p>
 </header>
 
-<!-- Token entry overlay (shown until a valid token is provided) -->
 <div id="token-overlay">
   <div class="token-box">
-    <h2>Mapbox Access Token</h2>
-    <p>Enter your Mapbox <strong>secret</strong> or <strong>public</strong> token to load the map and
-       query Terrain-RGB tiles. The token is stored in <code>sessionStorage</code> only —
-       never committed to git.</p>
-    <input id="token-input" type="text" placeholder="sk.eyJ1... or pk.eyJ1..." spellcheck="false">
-    <button onclick="applyToken()">Continue →</button>
+    <h2>Mapbox Public Access Token</h2>
+    <p>Enter a Mapbox public token to load the base map. Elevation is queried from the USGS Elevation Point Query Service / 3DEP, not Mapbox Terrain-RGB. The token is stored in sessionStorage only.</p>
+    <input id="token-input" type="text" placeholder="pk.eyJ1..." spellcheck="false">
+    <button onclick="applyToken()">Continue</button>
   </div>
 </div>
 
 <div class="main">
   <div id="map"></div>
-
   <div class="sidebar">
-
-    <!-- Parcel details -->
     <div class="panel">
       <div class="panel-title">Target Parcel</div>
       <div class="info-grid">
-        <div class="info-row">
-          <span class="info-label">Owner</span>
-          <span class="info-val">Foust Roy E &amp; Christine D</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">Address</span>
-          <span class="info-val">Loop Rd 633, Gatlinburg TN</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">GISLINK</span>
-          <span class="info-val">078127P A 01800</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">ID</span>
-          <span class="info-val">127P A 018.00</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">Size</span>
-          <span class="info-val">2.46 acres</span>
-        </div>
+        <div class="info-row"><span class="info-label">Owner</span><span class="info-val">Foust Roy E &amp; Christine D</span></div>
+        <div class="info-row"><span class="info-label">Address</span><span class="info-val">Loop Rd 633, Gatlinburg TN</span></div>
+        <div class="info-row"><span class="info-label">GISLINK</span><span class="info-val">078127P A 01800</span></div>
+        <div class="info-row"><span class="info-label">ID</span><span class="info-val">127P A 018.00</span></div>
+        <div class="info-row"><span class="info-label">Size</span><span class="info-val">2.46 acres</span></div>
       </div>
       <div id="field-result"></div>
     </div>
 
-    <!-- Results -->
     <div class="panel">
       <div class="panel-title">Analysis Results</div>
       <div class="metric-cards">
-        <div class="metric-card">
-          <div class="metric-value" id="avg-slope">--</div>
-          <div class="metric-label">Avg Slope (°)</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value" id="max-slope">--</div>
-          <div class="metric-label">Max Slope (°)</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value" id="elev-min">--</div>
-          <div class="metric-label">Min Elev (m)</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value" id="elev-max">--</div>
-          <div class="metric-label">Max Elev (m)</div>
-        </div>
+        <div class="metric-card"><div class="metric-value" id="avg-slope-deg">--</div><div class="metric-label">Avg Slope (deg)</div></div>
+        <div class="metric-card"><div class="metric-value" id="avg-slope-pct">--</div><div class="metric-label">Avg Slope (%)</div></div>
+        <div class="metric-card"><div class="metric-value" id="max-slope-deg">--</div><div class="metric-label">Max Slope (deg)</div></div>
+        <div class="metric-card"><div class="metric-value" id="inside-count">--</div><div class="metric-label">Parcel Samples</div></div>
+        <div class="metric-card"><div class="metric-value" id="elev-min">--</div><div class="metric-label">Min Elev (m)</div></div>
+        <div class="metric-card"><div class="metric-value" id="elev-max">--</div><div class="metric-label">Max Elev (m)</div></div>
       </div>
+      <div class="notice">Planning-grade screen only. USGS EPQS elevations are interpolated from 3DEP and are not a surveyed engineering measurement.</div>
     </div>
 
-    <!-- Slope legend -->
+    <div class="panel">
+      <div class="panel-title">Slope Bands - Parcel Interior</div>
+      <div class="bands" id="slope-bands"></div>
+    </div>
+
     <div class="panel">
       <div class="panel-title">Slope Heatmap Legend</div>
       <div class="legend-bar"></div>
-      <div class="legend-ticks">
-        <span>0°</span><span>11°</span><span>22°</span><span>34°</span><span>45°+</span>
-      </div>
+      <div class="legend-ticks"><span>0 deg</span><span>11 deg</span><span>22 deg</span><span>34 deg</span><span>45+ deg</span></div>
     </div>
 
-    <!-- Status log -->
     <div class="panel">
       <div class="panel-title">Status</div>
       <div class="status-log" id="status-log"></div>
     </div>
 
-    <!-- Run button -->
-    <div class="panel">
-      <button id="run-btn" onclick="runAnalysis()">▶ Run Analysis</button>
-    </div>
-
+    <div class="panel"><button id="run-btn" onclick="runAnalysis()">Run Analysis</button></div>
   </div>
 </div>
 
 <script>
-// ── Config ─────────────────────────────────────────────────────────────────────
-// Token is supplied at runtime via the overlay and stored in sessionStorage.
 let TOKEN = '';
-
-function applyToken() {
-  const val = document.getElementById('token-input').value.trim();
-  if (!val) { alert('Please enter a Mapbox token.'); return; }
-  TOKEN = val;
-  sessionStorage.setItem('mapbox_token', val);
-  mapboxgl.accessToken = TOKEN;
-  document.getElementById('token-overlay').style.display = 'none';
-  initMap();
-}
-
-// Restore from session if available
-(function bootstrap() {
-  const saved = sessionStorage.getItem('mapbox_token');
-  if (saved) {
-    TOKEN = saved;
-    document.getElementById('token-input').value = saved;
-    mapboxgl.accessToken = TOKEN;
-    document.getElementById('token-overlay').style.display = 'none';
-  }
-})();
+let map;
+const SAMPLE_SIZE = 16;
+const USGS_EPQS_URL = 'https://epqs.nationalmap.gov/v1/json';
 
 const TARGET = {
   gislink: '078127P A 01800',
   id: '127P A 018.00',
   owner: 'FOUST ROY E',
-  // Approximate center near Gatlinburg based on parcel data
   center: [-83.523, 35.868],
 };
 
-// Ordered list of ArcGIS FeatureServer endpoints to try
 const ENDPOINTS = [
   'https://gis.seviertn.gov/arcgis/rest/services/parcels/FeatureServer/0',
   'https://gis.seviertn.gov/arcgis/rest/services/Parcels/FeatureServer/0',
   'https://gis.seviertn.gov/arcgis/rest/services/parcel/FeatureServer/0',
   'https://gis.seviertn.gov/arcgis/rest/services/Parcel/FeatureServer/0',
   'https://maps.seviertn.gov/arcgis/rest/services/parcels/FeatureServer/0',
+  'https://services3.arcgis.com/cYPAijXv24o8BjFq/arcgis/rest/services/Parcel/FeatureServer/0',
   'https://services.arcgis.com/nv1dgF9aaF8uWPzl/arcgis/rest/services/Parcels/FeatureServer/0',
   'https://services1.arcgis.com/nv1dgF9aaF8uWPzl/arcgis/rest/services/Parcels/FeatureServer/0',
   'https://services2.arcgis.com/nv1dgF9aaF8uWPzl/arcgis/rest/services/Parcels/FeatureServer/0',
 ];
 
-// Field/value combinations to try — both GISLINK and ID formats
 const QUERIES = [
   { label: 'GISLINK',        where: `GISLINK='078127P A 01800'` },
   { label: 'GISLINK_NO_SP',  where: `GISLINK='078127PA01800'` },
@@ -326,11 +239,28 @@ const QUERIES = [
   { label: 'OWN1 LIKE',      where: `OWN1 LIKE '%FOUST%'` },
 ];
 
-// ── Map init ───────────────────────────────────────────────────────────────────
-let map;
+function applyToken() {
+  const val = document.getElementById('token-input').value.trim();
+  if (!val) { alert('Please enter a Mapbox public token.'); return; }
+  TOKEN = val;
+  sessionStorage.setItem('mapbox_token', val);
+  mapboxgl.accessToken = TOKEN;
+  document.getElementById('token-overlay').style.display = 'none';
+  initMap();
+}
+
+(function bootstrap() {
+  const saved = sessionStorage.getItem('mapbox_token');
+  if (saved) {
+    TOKEN = saved;
+    document.getElementById('token-input').value = saved;
+    mapboxgl.accessToken = TOKEN;
+    document.getElementById('token-overlay').style.display = 'none';
+  }
+})();
 
 function initMap() {
-  if (map) return; // already initialised
+  if (map) return;
   map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/satellite-streets-v12',
@@ -338,13 +268,10 @@ function initMap() {
     zoom: 15,
   });
   map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-  map.on('load', () => log('Map ready — click Run Analysis', 'info'));
+  map.on('load', () => log('Map ready - click Run Analysis', 'info'));
 }
-
-// Auto-init if token was restored from session
 if (TOKEN) initMap();
 
-// ── Logging ────────────────────────────────────────────────────────────────────
 function log(msg, type = 'info') {
   const el = document.getElementById('status-log');
   const item = document.createElement('div');
@@ -355,7 +282,6 @@ function log(msg, type = 'info') {
 }
 function clearLog() { document.getElementById('status-log').innerHTML = ''; }
 
-// ── ArcGIS query ───────────────────────────────────────────────────────────────
 async function queryLayer(endpoint, where) {
   const params = new URLSearchParams({
     where,
@@ -364,9 +290,7 @@ async function queryLayer(endpoint, where) {
     returnGeometry: 'true',
     f: 'geojson',
   });
-  const res = await fetch(`${endpoint}/query?${params}`, {
-    signal: AbortSignal.timeout(8000),
-  });
+  const res = await fetch(`${endpoint}/query?${params}`, { signal: AbortSignal.timeout(8000) });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const data = await res.json();
   if (data.error) throw new Error(data.error.message || 'ArcGIS error');
@@ -374,151 +298,29 @@ async function queryLayer(endpoint, where) {
 }
 
 async function findParcel() {
-  log('Querying Sevier County ArcGIS parcel layer…', 'running');
-
+  log('Querying Sevier County ArcGIS parcel layer...', 'running');
   for (const endpoint of ENDPOINTS) {
     const host = (() => { try { return new URL(endpoint).hostname; } catch { return endpoint; } })();
     for (const q of QUERIES) {
       try {
         const data = await queryLayer(endpoint, q.where);
         if (data.features && data.features.length > 0) {
-          log(`✓ Found via field: ${q.label} @ ${host}`, 'success');
+          log(`Found via field: ${q.label} @ ${host}`, 'success');
           return { geojson: data, fieldWorked: q.label, endpoint };
         }
-        // Got a response but zero features — no need to retry other fields on same endpoint if
-        // the endpoint is live; still worth trying other field names
       } catch (e) {
         const msg = e.message || '';
-        // If server is unreachable, skip remaining queries for this endpoint
-        if (msg.includes('Failed to fetch') || msg.includes('NetworkError') ||
-            msg.includes('ECONNREFUSED') || msg.includes('timeout')) {
-          log(`  ${host} unreachable — skipping`, 'warn');
+        if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('ECONNREFUSED') || msg.includes('timeout')) {
+          log(`${host} unreachable - skipping`, 'warn');
           break;
         }
-        // Otherwise log and try next field
-        log(`  ${q.label}: ${msg.slice(0, 55)}`, 'error');
+        log(`${q.label}: ${msg.slice(0, 55)}`, 'error');
       }
     }
   }
   return null;
 }
 
-// ── Terrain-RGB helpers ────────────────────────────────────────────────────────
-function lngLatToTileXY(lng, lat, z) {
-  const n = 1 << z;
-  const x = Math.floor((lng + 180) / 360 * n);
-  const sinLat = Math.sin(lat * Math.PI / 180);
-  const y = Math.floor((0.5 - Math.log((1 + sinLat) / (1 - sinLat)) / (4 * Math.PI)) * n);
-  return { x: Math.max(0, Math.min(n - 1, x)), y: Math.max(0, Math.min(n - 1, y)) };
-}
-
-function lngLatToPixel(lng, lat, z, tx, ty) {
-  const n = (1 << z) * 256;
-  const px = ((lng + 180) / 360 * n) - tx * 256;
-  const sinLat = Math.sin(lat * Math.PI / 180);
-  const py = ((0.5 - Math.log((1 + sinLat) / (1 - sinLat)) / (4 * Math.PI)) * n) - ty * 256;
-  return {
-    px: Math.max(0, Math.min(255, Math.floor(px))),
-    py: Math.max(0, Math.min(255, Math.floor(py))),
-  };
-}
-
-function rgbToElevation(r, g, b) {
-  return -10000 + (r * 65536 + g * 256 + b) * 0.1;
-}
-
-// Cache tiles to avoid redundant fetches
-const tileCache = new Map();
-
-async function fetchTilePixel(lng, lat, z = 14) {
-  const { x, y } = lngLatToTileXY(lng, lat, z);
-  const key = `${z}/${x}/${y}`;
-
-  if (!tileCache.has(key)) {
-    const url = `https://api.mapbox.com/v4/mapbox.terrain-rgb/${z}/${x}/${y}.pngraw?access_token=${TOKEN}`;
-    const promise = new Promise((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = canvas.height = 256;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-        resolve(ctx); // store the 2D context for pixel reads
-      };
-      img.onerror = () => reject(new Error(`Tile fetch failed: ${key}`));
-      img.src = url;
-    });
-    tileCache.set(key, promise);
-  }
-
-  const ctx = await tileCache.get(key);
-  const { px, py } = lngLatToPixel(lng, lat, z, x, y);
-  const [r, g, b] = ctx.getImageData(px, py, 1, 1).data;
-  return rgbToElevation(r, g, b);
-}
-
-// ── Elevation grid sampling ────────────────────────────────────────────────────
-async function sampleGrid(bbox, n = 10) {
-  const [w, s, e, n_] = bbox;
-  const lngs = Array.from({ length: n }, (_, i) => w + (e - w) * i / (n - 1));
-  const lats = Array.from({ length: n }, (_, i) => s + (n_ - s) * i / (n - 1));
-
-  log(`Sampling ${n}×${n} elevation grid (Terrain-RGB z=14)…`, 'running');
-
-  const grid = [];
-  for (let r = 0; r < n; r++) {
-    const row = await Promise.all(lngs.map(lng => fetchTilePixel(lng, lats[r])));
-    grid.push(row);
-  }
-
-  log(`Elevation grid complete (${n * n} samples, ${tileCache.size} unique tiles fetched)`, 'success');
-  return { grid, lngs, lats };
-}
-
-// ── Slope calculation ──────────────────────────────────────────────────────────
-function mPerDeg(lat) {
-  const mLat = 111319.9;
-  const mLng = 111319.9 * Math.cos(lat * Math.PI / 180);
-  return { mLat, mLng };
-}
-
-function computeSlopes(grid, lngs, lats) {
-  const n = grid.length;
-  const results = [];
-
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < n; j++) {
-      const { mLat, mLng } = mPerDeg(lats[i]);
-
-      // Finite differences (central where possible, forward/backward at edges)
-      let dzdx;
-      if (j === 0)     dzdx = (grid[i][j+1] - grid[i][j])   / ((lngs[j+1] - lngs[j]) * mLng);
-      else if (j===n-1) dzdx = (grid[i][j]   - grid[i][j-1]) / ((lngs[j] - lngs[j-1]) * mLng);
-      else              dzdx = (grid[i][j+1] - grid[i][j-1]) / ((lngs[j+1] - lngs[j-1]) * mLng);
-
-      let dzdy;
-      if (i === 0)     dzdy = (grid[i+1][j] - grid[i][j])   / ((lats[i+1] - lats[i]) * mLat);
-      else if (i===n-1) dzdy = (grid[i][j]   - grid[i-1][j]) / ((lats[i] - lats[i-1]) * mLat);
-      else              dzdy = (grid[i+1][j] - grid[i-1][j]) / ((lats[i+1] - lats[i-1]) * mLat);
-
-      const slope = Math.atan(Math.sqrt(dzdx * dzdx + dzdy * dzdy)) * 180 / Math.PI;
-      results.push({ lng: lngs[j], lat: lats[i], elev: grid[i][j], slope });
-    }
-  }
-
-  const slopes = results.map(p => p.slope);
-  const elevs  = results.map(p => p.elev);
-  return {
-    points:   results,
-    avgSlope: slopes.reduce((a, b) => a + b, 0) / slopes.length,
-    maxSlope: Math.max(...slopes),
-    minElev:  Math.min(...elevs),
-    maxElev:  Math.max(...elevs),
-  };
-}
-
-// ── Map layers ─────────────────────────────────────────────────────────────────
 function setSource(id, data) {
   if (map.getSource(id)) map.getSource(id).setData(data);
   else map.addSource(id, { type: 'geojson', data });
@@ -527,13 +329,159 @@ function setSource(id, data) {
 function addParcelLayers(geojson) {
   setSource('parcel', geojson);
   if (!map.getLayer('parcel-fill')) {
-    map.addLayer({ id: 'parcel-fill', type: 'fill', source: 'parcel',
-      paint: { 'fill-color': '#4fc3f7', 'fill-opacity': 0.12 } });
+    map.addLayer({ id: 'parcel-fill', type: 'fill', source: 'parcel', paint: { 'fill-color': '#4fc3f7', 'fill-opacity': 0.12 } });
   }
   if (!map.getLayer('parcel-outline')) {
-    map.addLayer({ id: 'parcel-outline', type: 'line', source: 'parcel',
-      paint: { 'line-color': '#4fc3f7', 'line-width': 2.5, 'line-opacity': 0.9 } });
+    map.addLayer({ id: 'parcel-outline', type: 'line', source: 'parcel', paint: { 'line-color': '#4fc3f7', 'line-width': 2.5, 'line-opacity': 0.9 } });
   }
+}
+
+function bboxOfGeoJSON(fc) {
+  let [w, s, e, n] = [Infinity, Infinity, -Infinity, -Infinity];
+  const absorb = ([lng, lat]) => { w = Math.min(w, lng); e = Math.max(e, lng); s = Math.min(s, lat); n = Math.max(n, lat); };
+  const walkRing = ring => ring.forEach(absorb);
+  const walkGeom = g => {
+    if (!g) return;
+    if (g.type === 'Point') absorb(g.coordinates);
+    else if (g.type === 'MultiPoint' || g.type === 'LineString') g.coordinates.forEach(absorb);
+    else if (g.type === 'MultiLineString' || g.type === 'Polygon') g.coordinates.forEach(walkRing);
+    else if (g.type === 'MultiPolygon') g.coordinates.forEach(p => p.forEach(walkRing));
+  };
+  fc.features.forEach(f => walkGeom(f.geometry));
+  return [w, s, e, n];
+}
+
+function pointInRing(point, ring) {
+  const [x, y] = point;
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    const intersects = ((yi > y) !== (yj > y)) &&
+      (x < (xj - xi) * (y - yi) / ((yj - yi) || Number.EPSILON) + xi);
+    if (intersects) inside = !inside;
+  }
+  return inside;
+}
+
+function pointInPolygon(point, polygon) {
+  if (!polygon.length || !pointInRing(point, polygon[0])) return false;
+  for (let i = 1; i < polygon.length; i++) {
+    if (pointInRing(point, polygon[i])) return false;
+  }
+  return true;
+}
+
+function pointInGeoJSON(point, fc) {
+  if (!fc) return true;
+  return fc.features.some(f => {
+    const g = f.geometry;
+    if (!g) return false;
+    if (g.type === 'Polygon') return pointInPolygon(point, g.coordinates);
+    if (g.type === 'MultiPolygon') return g.coordinates.some(poly => pointInPolygon(point, poly));
+    return false;
+  });
+}
+
+function metersPerDegree(lat) {
+  return { mLat: 111319.9, mLng: 111319.9 * Math.cos(lat * Math.PI / 180) };
+}
+
+function buildGrid(bbox, sampleSize) {
+  const [w, s, e, n] = bbox;
+  const lngs = Array.from({ length: sampleSize }, (_, i) => w + (e - w) * i / (sampleSize - 1));
+  const lats = Array.from({ length: sampleSize }, (_, i) => s + (n - s) * i / (sampleSize - 1));
+  return { lngs, lats };
+}
+
+async function fetchUSGSElevation(lng, lat) {
+  const params = new URLSearchParams({ x: lng.toFixed(7), y: lat.toFixed(7), units: 'Meters', output: 'json' });
+  const res = await fetch(`${USGS_EPQS_URL}?${params}`, { signal: AbortSignal.timeout(12000) });
+  if (!res.ok) throw new Error(`USGS HTTP ${res.status}`);
+  const data = await res.json();
+  const elevation = Number(data?.value ?? data?.USGS_Elevation_Point_Query_Service?.Elevation_Query?.Elevation);
+  if (!Number.isFinite(elevation) || elevation < -1000) throw new Error('USGS returned invalid elevation');
+  return elevation;
+}
+
+async function sampleUSGSGrid(bbox, parcelGeoJSON, sampleSize = SAMPLE_SIZE) {
+  const { lngs, lats } = buildGrid(bbox, sampleSize);
+  const grid = [];
+  let completed = 0;
+  log(`Sampling ${sampleSize}x${sampleSize} USGS 3DEP elevation grid...`, 'running');
+  for (let r = 0; r < sampleSize; r++) {
+    const row = [];
+    for (let c = 0; c < sampleSize; c++) {
+      const elev = await fetchUSGSElevation(lngs[c], lats[r]);
+      const inside = pointInGeoJSON([lngs[c], lats[r]], parcelGeoJSON);
+      row.push({ lng: lngs[c], lat: lats[r], elev, inside });
+      completed++;
+      if (completed % 32 === 0) log(`USGS samples complete: ${completed}/${sampleSize * sampleSize}`, 'info');
+    }
+    grid.push(row);
+  }
+  log(`USGS elevation grid complete (${sampleSize * sampleSize} samples)`, 'success');
+  return { grid, lngs, lats };
+}
+
+function slopeBand(slopePct) {
+  if (slopePct < 15) return '0-15%';
+  if (slopePct < 25) return '15-25%';
+  if (slopePct < 35) return '25-35%';
+  return '35%+';
+}
+
+function computeSlopes(grid, lngs, lats) {
+  const n = grid.length;
+  const points = [];
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      const { mLat, mLng } = metersPerDegree(lats[i]);
+      const dzdx = j === 0
+        ? (grid[i][j + 1].elev - grid[i][j].elev) / ((lngs[j + 1] - lngs[j]) * mLng)
+        : j === n - 1
+          ? (grid[i][j].elev - grid[i][j - 1].elev) / ((lngs[j] - lngs[j - 1]) * mLng)
+          : (grid[i][j + 1].elev - grid[i][j - 1].elev) / ((lngs[j + 1] - lngs[j - 1]) * mLng);
+      const dzdy = i === 0
+        ? (grid[i + 1][j].elev - grid[i][j].elev) / ((lats[i + 1] - lats[i]) * mLat)
+        : i === n - 1
+          ? (grid[i][j].elev - grid[i - 1][j].elev) / ((lats[i] - lats[i - 1]) * mLat)
+          : (grid[i + 1][j].elev - grid[i - 1][j].elev) / ((lats[i + 1] - lats[i - 1]) * mLat);
+      const riseRun = Math.sqrt(dzdx * dzdx + dzdy * dzdy);
+      const slopeDeg = Math.atan(riseRun) * 180 / Math.PI;
+      const slopePct = riseRun * 100;
+      points.push({
+        lng: grid[i][j].lng,
+        lat: grid[i][j].lat,
+        elev: grid[i][j].elev,
+        inside: grid[i][j].inside,
+        slopeDeg,
+        slopePct,
+        band: slopeBand(slopePct),
+      });
+    }
+  }
+  const insidePoints = points.filter(p => p.inside);
+  const statPoints = insidePoints.length ? insidePoints : points;
+  const avg = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+  const elevs = statPoints.map(p => p.elev);
+  const slopeDegs = statPoints.map(p => p.slopeDeg);
+  const slopePcts = statPoints.map(p => p.slopePct);
+  const bands = { '0-15%': 0, '15-25%': 0, '25-35%': 0, '35%+': 0 };
+  statPoints.forEach(p => { bands[p.band] += 1; });
+  return {
+    allPoints: points,
+    points: statPoints,
+    avgSlopeDeg: avg(slopeDegs),
+    avgSlopePct: avg(slopePcts),
+    maxSlopeDeg: Math.max(...slopeDegs),
+    maxSlopePct: Math.max(...slopePcts),
+    minElev: Math.min(...elevs),
+    maxElev: Math.max(...elevs),
+    bands,
+    insideCount: statPoints.length,
+    clipped: insidePoints.length > 0,
+  };
 }
 
 function addSlopeHeatmap(points) {
@@ -542,121 +490,99 @@ function addSlopeHeatmap(points) {
     features: points.map(p => ({
       type: 'Feature',
       geometry: { type: 'Point', coordinates: [p.lng, p.lat] },
-      properties: { slope: p.slope },
+      properties: { slope: p.slopeDeg, slopePct: p.slopePct, band: p.band },
     })),
   };
   setSource('slope', fc);
-
   if (!map.getLayer('slope-heat')) {
-    // Insert heatmap below the parcel outline so boundary stays visible
     map.addLayer({
       id: 'slope-heat',
       type: 'heatmap',
       source: 'slope',
       paint: {
-        // Weight by slope, capped at 45°
         'heatmap-weight': ['interpolate', ['linear'], ['get', 'slope'], 0, 0, 45, 1],
         'heatmap-intensity': 2.5,
         'heatmap-radius': 28,
         'heatmap-opacity': 0.78,
         'heatmap-color': [
           'interpolate', ['linear'], ['heatmap-density'],
-          0,    'rgba(26,152,80,0)',
-          0.15, 'rgba(26,152,80,0.8)',
-          0.35, 'rgba(145,207,96,0.85)',
-          0.5,  'rgba(217,239,139,0.85)',
-          0.65, 'rgba(254,224,139,0.85)',
-          0.8,  'rgba(252,141,89,0.85)',
-          1,    'rgba(215,48,39,0.9)',
+          0, 'rgba(26,152,80,0)', 0.15, 'rgba(26,152,80,0.8)',
+          0.35, 'rgba(145,207,96,0.85)', 0.5, 'rgba(217,239,139,0.85)',
+          0.65, 'rgba(254,224,139,0.85)', 0.8, 'rgba(252,141,89,0.85)', 1, 'rgba(215,48,39,0.9)',
         ],
       },
     }, 'parcel-fill');
   }
 }
 
-// ── BBox from GeoJSON ──────────────────────────────────────────────────────────
-function bboxOfGeoJSON(fc) {
-  let [w, s, e, n] = [Infinity, Infinity, -Infinity, -Infinity];
-  const absorb = ([lng, lat]) => {
-    if (lng < w) w = lng; if (lng > e) e = lng;
-    if (lat < s) s = lat; if (lat > n) n = lat;
-  };
-  const walkRing  = ring => ring.forEach(absorb);
-  const walkGeom  = g => {
-    if (!g) return;
-    const t = g.type;
-    if (t === 'Point')           absorb(g.coordinates);
-    else if (t === 'MultiPoint' || t === 'LineString') g.coordinates.forEach(absorb);
-    else if (t === 'MultiLineString' || t === 'Polygon') g.coordinates.forEach(walkRing);
-    else if (t === 'MultiPolygon') g.coordinates.forEach(p => p.forEach(walkRing));
-  };
-  fc.features.forEach(f => walkGeom(f.geometry));
-  return [w, s, e, n];
+function renderBands(bands, total) {
+  const el = document.getElementById('slope-bands');
+  el.innerHTML = '';
+  Object.entries(bands).forEach(([label, count]) => {
+    const pct = total ? (count / total) * 100 : 0;
+    const row = document.createElement('div');
+    row.className = 'band-row';
+    row.innerHTML = `<span>${label}</span><div class="band-track"><div class="band-fill" style="width:${pct.toFixed(1)}%"></div></div><span>${pct.toFixed(0)}%</span>`;
+    el.appendChild(row);
+  });
 }
 
-// ── Main ───────────────────────────────────────────────────────────────────────
 async function runAnalysis() {
-  if (!TOKEN) { alert('Please enter your Mapbox token first.'); return; }
-  if (!map) { alert('Map not initialised — enter your token first.'); return; }
+  if (!TOKEN) { alert('Please enter your Mapbox public token first.'); return; }
+  if (!map) { alert('Map not initialised - enter your token first.'); return; }
   const btn = document.getElementById('run-btn');
   btn.disabled = true;
-  btn.textContent = 'Running…';
-  tileCache.clear();
+  btn.textContent = 'Running...';
   clearLog();
+  renderBands({ '0-15%': 0, '15-25%': 0, '25-35%': 0, '35%+': 0 }, 0);
 
   try {
-    // 1. Locate parcel via ArcGIS
     const found = await findParcel();
-
     let bbox;
+    let parcelGeoJSON = null;
+
     if (found) {
-      addParcelLayers(found.geojson);
-      bbox = bboxOfGeoJSON(found.geojson);
+      parcelGeoJSON = found.geojson;
+      addParcelLayers(parcelGeoJSON);
+      bbox = bboxOfGeoJSON(parcelGeoJSON);
       map.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]], { padding: 60, duration: 1200 });
       log(`Bbox: [${bbox.map(v => v.toFixed(5)).join(', ')}]`, 'info');
-
-      // Report which field format worked
-      document.getElementById('field-result').innerHTML =
-        `<span class="field-badge">✓ ${found.fieldWorked}</span>`;
+      document.getElementById('field-result').innerHTML = `<span class="field-badge">${found.fieldWorked}</span>`;
     } else {
       log('Parcel not found via ArcGIS on any endpoint/field combo', 'error');
-      log('Falling back to approximate location for elevation demo', 'warn');
-      // ~300 m half-side around Gatlinburg center (~2.5 acre footprint)
+      log('Falling back to approximate location; stats are not parcel-clipped', 'warn');
       const [cx, cy] = TARGET.center;
       const r = 0.003;
       bbox = [cx - r, cy - r, cx + r, cy + r];
-      document.getElementById('field-result').innerHTML =
-        `<span class="field-badge none">✗ No field matched</span>`;
+      document.getElementById('field-result').innerHTML = `<span class="field-badge none">No field matched</span>`;
     }
 
-    // 2. Sample elevation grid
-    const { grid, lngs, lats } = await sampleGrid(bbox, 10);
+    const { grid, lngs, lats } = await sampleUSGSGrid(bbox, parcelGeoJSON, SAMPLE_SIZE);
+    log('Computing slope and parcel-interior slope bands...', 'running');
+    const stats = computeSlopes(grid, lngs, lats);
+    if (stats.clipped) log(`Using ${stats.insideCount} parcel-interior samples for stats`, 'success');
+    else log('No parcel-interior sample clip available; using all bbox samples', 'warn');
 
-    // 3. Compute slope
-    log('Computing slope across grid…', 'running');
-    const { points, avgSlope, maxSlope, minElev, maxElev } = computeSlopes(grid, lngs, lats);
-    log(`Avg slope: ${avgSlope.toFixed(1)}°  |  Max: ${maxSlope.toFixed(1)}°`, 'success');
-    log(`Elevation: ${minElev.toFixed(0)} – ${maxElev.toFixed(0)} m`, 'success');
+    document.getElementById('avg-slope-deg').textContent = stats.avgSlopeDeg.toFixed(1) + 'deg';
+    document.getElementById('avg-slope-pct').textContent = stats.avgSlopePct.toFixed(0) + '%';
+    document.getElementById('max-slope-deg').textContent = stats.maxSlopeDeg.toFixed(1) + 'deg';
+    document.getElementById('inside-count').textContent = String(stats.insideCount);
+    document.getElementById('elev-min').textContent = stats.minElev.toFixed(0);
+    document.getElementById('elev-max').textContent = stats.maxElev.toFixed(0);
+    renderBands(stats.bands, stats.insideCount);
 
-    // 4. Update metrics
-    document.getElementById('avg-slope').textContent = avgSlope.toFixed(1) + '°';
-    document.getElementById('max-slope').textContent = maxSlope.toFixed(1) + '°';
-    document.getElementById('elev-min').textContent  = minElev.toFixed(0);
-    document.getElementById('elev-max').textContent  = maxElev.toFixed(0);
-
-    // 5. Render heatmap
-    addSlopeHeatmap(points);
-    log('Slope heatmap rendered', 'success');
-
+    addSlopeHeatmap(stats.points);
+    log(`Avg slope: ${stats.avgSlopeDeg.toFixed(1)} deg (${stats.avgSlopePct.toFixed(0)}%) | Max: ${stats.maxSlopeDeg.toFixed(1)} deg`, 'success');
+    log(`Elevation: ${stats.minElev.toFixed(0)}-${stats.maxElev.toFixed(0)} m`, 'success');
+    log('Slope heatmap rendered with parcel-interior samples', 'success');
   } catch (err) {
     log(`Unexpected error: ${err.message}`, 'error');
     console.error(err);
   } finally {
     btn.disabled = false;
-    btn.textContent = '▶ Run Analysis';
+    btn.textContent = 'Run Analysis';
   }
 }
-
 </script>
 </body>
 </html>
