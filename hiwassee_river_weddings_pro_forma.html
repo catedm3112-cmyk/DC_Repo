@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hiwassee River Weddings — Updated Pro Forma</title>
+<style>
+  :root {
+    --ink: #1f2a37;
+    --muted: #5b6775;
+    --line: #e3e8ee;
+    --bg: #f6f8fa;
+    --card: #ffffff;
+    --accent: #2f6f4f;
+    --accent-soft: #e8f3ec;
+    --warn: #b4541a;
+    --warn-soft: #fdf0e6;
+    --good: #2f6f4f;
+    --shadow: 0 1px 3px rgba(16,24,40,.06), 0 1px 2px rgba(16,24,40,.04);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* Header */
+  header.hero {
+    background: linear-gradient(135deg, #2f6f4f 0%, #27583f 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 30px 32px;
+    box-shadow: var(--shadow);
+  }
+  header.hero h1 {
+    margin: 0 0 6px;
+    font-size: 26px;
+    letter-spacing: .2px;
+  }
+  header.hero .subtitle {
+    font-size: 15px;
+    opacity: .95;
+    margin: 0;
+  }
+  .scenario {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .scenario span {
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.25);
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .purpose {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 22px 0 8px;
+    color: var(--muted);
+    font-size: 14.5px;
+    box-shadow: var(--shadow);
+  }
+
+  /* Sections */
+  section {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-top: 22px;
+    box-shadow: var(--shadow);
+  }
+  h2 {
+    font-size: 19px;
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent-soft);
+    color: var(--accent);
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  thead th {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-bottom: 1px solid var(--line);
+  }
+  td.num, th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  tbody tr:last-child td { border-bottom: none; }
+  tr.total td {
+    font-weight: 700;
+    background: #f8faf9;
+    border-top: 2px solid var(--accent-soft);
+  }
+  tr.highlight td {
+    background: var(--accent-soft);
+    font-weight: 700;
+  }
+
+  /* KPI cards */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .kpi {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    background: #fbfdfc;
+  }
+  .kpi .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
+  .kpi .value { font-size: 22px; font-weight: 700; margin-top: 4px; color: var(--accent); }
+
+  /* Callout boxes */
+  .callout {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 6px;
+    font-size: 14.5px;
+  }
+  .callout.note {
+    background: var(--accent-soft);
+    border: 1px solid #cfe6d8;
+  }
+  .callout.warn {
+    background: var(--warn-soft);
+    border: 1px solid #f3d8c2;
+  }
+  .callout strong { color: var(--ink); }
+
+  ul.concerns { margin: 4px 0 0; padding-left: 0; list-style: none; }
+  ul.concerns li {
+    position: relative;
+    padding: 10px 0 10px 26px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14.5px;
+  }
+  ul.concerns li:last-child { border-bottom: none; }
+  ul.concerns li::before {
+    content: "▲";
+    position: absolute;
+    left: 0; top: 11px;
+    color: var(--warn);
+    font-size: 12px;
+  }
+
+  footer {
+    margin-top: 28px;
+    font-size: 12.5px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.6;
+  }
+  .disclaimer {
+    background: #f0f2f5;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 22px;
+  }
+
+  @media print {
+    body { background: #fff; }
+    section, .purpose, header.hero { box-shadow: none; }
+    header.hero { background: #27583f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <h1>Hiwassee River Weddings — Updated Pro Forma</h1>
+    <p class="subtitle">Seller Proposal Scenario</p>
+    <div class="scenario">
+      <span>$250,000 Down</span>
+      <span>6.5% Interest</span>
+      <span>20-Year Amortization</span>
+      <span>2-Year Balloon</span>
+    </div>
+  </header>
+
+  <div class="purpose">
+    <strong>Purpose:</strong> Preliminary buyer-side underwriting based on the seller proposal and current
+    working operating assumptions. This is <em>not</em> a final valuation or legal/financing opinion.
+  </div>
+
+  <!-- Acquisition / Financing -->
+  <section>
+    <h2>Acquisition &amp; Financing</h2>
+    <table>
+      <thead>
+        <tr><th>Item</th><th class="num">Assumption</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Purchase price</td><td class="num">$1,900,000</td></tr>
+        <tr><td>Down payment at closing</td><td class="num">$250,000</td></tr>
+        <tr><td>Seller-financed balance</td><td class="num">$1,650,000</td></tr>
+        <tr><td>Interest rate</td><td class="num">6.5%</td></tr>
+        <tr><td>Amortization</td><td class="num">20 years</td></tr>
+        <tr><td>Balloon</td><td class="num">2 years</td></tr>
+        <tr><td>Title structure proposed by seller</td><td class="num">Seller retains title until balloon payoff</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Revenue -->
+  <section>
+    <h2>Revenue Assumptions</h2>
+    <table>
+      <thead>
+        <tr><th>Revenue Item</th><th>Calculation</th><th class="num">Annual Amount</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Wedding venue revenue</td><td>75 weddings × $7,500 avg.</td><td class="num">$562,500</td></tr>
+        <tr><td>Additional revenue / upsells</td><td>Added hours, misc. venue revenue</td><td class="num">$25,000</td></tr>
+        <tr class="total"><td>Total gross revenue</td><td></td><td class="num">$587,500</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Operating Expenses -->
+  <section>
+    <h2>Operating Expense Assumptions</h2>
+    <table>
+      <thead>
+        <tr><th>Expense</th><th class="num">Annual Amount</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Manager salary</td><td class="num">$40,000</td></tr>
+        <tr><td>Marketing / social media</td><td class="num">$21,000</td></tr>
+        <tr><td>Property taxes</td><td class="num">$6,000</td></tr>
+        <tr><td>Flood + commercial insurance</td><td class="num">$18,000</td></tr>
+        <tr><td>Utilities</td><td class="num">$16,000</td></tr>
+        <tr><td>Landscaping / maintenance</td><td class="num">$24,000</td></tr>
+        <tr><td>Cleaning / miscellaneous operations</td><td class="num">$18,000</td></tr>
+        <tr><td>Repairs / reserves</td><td class="num">$15,000</td></tr>
+        <tr class="total"><td>Total operating expenses before debt</td><td class="num">$158,000</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- NOI and Debt Service -->
+  <section>
+    <h2>NOI &amp; Debt Service</h2>
+    <div class="kpis">
+      <div class="kpi"><div class="label">Estimated NOI</div><div class="value">$429,500</div></div>
+      <div class="kpi"><div class="label">Cash Flow After Debt</div><div class="value">$281,877</div></div>
+      <div class="kpi"><div class="label">DSCR</div><div class="value">2.91×</div></div>
+      <div class="kpi"><div class="label">Cash-on-Cash</div><div class="value">112.8%</div></div>
+      <div class="kpi"><div class="label">Implied Cap Rate</div><div class="value">22.6%</div></div>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Metric</th><th class="num">Amount / Ratio</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Gross revenue</td><td class="num">$587,500</td></tr>
+        <tr><td>Operating expenses before debt</td><td class="num">$158,000</td></tr>
+        <tr class="highlight"><td>Estimated NOI</td><td class="num">$429,500</td></tr>
+        <tr><td>Monthly debt service</td><td class="num">$12,302</td></tr>
+        <tr><td>Annual debt service</td><td class="num">$147,623</td></tr>
+        <tr class="highlight"><td>Estimated cash flow after debt service</td><td class="num">$281,877</td></tr>
+        <tr><td>Estimated monthly cash flow after debt service</td><td class="num">$23,490</td></tr>
+        <tr><td>Debt service coverage ratio (DSCR)</td><td class="num">2.91×</td></tr>
+        <tr><td>Cash-on-cash return on $250k down</td><td class="num">112.8%</td></tr>
+        <tr><td>Implied cap rate on purchase price</td><td class="num">22.6%</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Balloon / Refinance -->
+  <section>
+    <h2>Balloon / Refinance Exposure</h2>
+    <table>
+      <thead>
+        <tr><th>Item</th><th class="num">Estimate</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Estimated principal balance due at 2-year balloon</td><td class="num">$1,564,018</td></tr>
+        <tr><td>Approximate principal reduction before balloon</td><td class="num">$85,982</td></tr>
+        <tr><td>Refinance amount likely needed</td><td class="num">≈ $1,564,018 + closing costs/reserves</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn" style="margin-top:16px;">
+      <strong>Buyer-side interpretation:</strong> The operating cash flow appears strong on paper if 75 weddings
+      at approximately $7,500 average revenue are sustainable. However, the seller proposal creates significant
+      <strong>refinance risk</strong> because the buyer must solve a roughly <strong>$1.56M payoff within only 24 months</strong>.
+    </div>
+  </section>
+
+  <!-- Key Concerns -->
+  <section>
+    <h2>Key Buyer-Side Concerns</h2>
+    <ul class="concerns">
+      <li><strong>Two-year balloon is the largest economic risk.</strong> It may not allow enough time to build
+        transferable operating history for permanent commercial financing.</li>
+      <li><strong>20-year amortization</strong> increases monthly debt service compared with a 30-year amortization
+        and reduces transition-period cash-flow flexibility.</li>
+      <li><strong>Seller retaining title until payoff</strong> is materially less favorable to the buyer than receiving
+        deed/title at closing with the seller secured by a deed of trust or mortgage.</li>
+      <li><strong>Cash-flow assumptions depend on verification</strong> — verified bookings, actual historical P&amp;L,
+        event expense load, insurance, flood policy cost, taxes, and maintenance reserves.</li>
+    </ul>
+  </section>
+
+  <!-- Negotiation Priorities -->
+  <section>
+    <h2>Negotiation Priorities</h2>
+    <table>
+      <thead>
+        <tr><th>Priority</th><th>Buyer Target</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1. Balloon term</strong></td><td>Push from 2 years to at least 5 years; 7 years preferred.</td></tr>
+        <tr><td><strong>2. Title / security structure</strong></td><td>Buyer receives title at closing; seller holds deed of trust/mortgage.</td></tr>
+        <tr><td><strong>3. Amortization</strong></td><td>Push from 20 years to 30 years.</td></tr>
+        <tr><td><strong>4. Interest rate</strong></td><td>6.0%–6.5% acceptable if balloon/title structure improves.</td></tr>
+        <tr><td><strong>5. Down payment</strong></td><td>$250k is attractive, but only if legal/security and balloon terms are corrected.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Conclusion -->
+  <section>
+    <h2>Preliminary Conclusion</h2>
+    <div class="callout note">
+      The proposed <strong>$250,000 down payment is attractive</strong>, but the <strong>2-year balloon</strong> and
+      <strong>seller-retained title structure</strong> are major buyer risks. From a buyer perspective, it would be
+      reasonable to sacrifice some interest rate or even some down payment if needed to secure a longer balloon,
+      deed/title at closing, 30-year amortization, clear transfer of bookings/deposits, and strong transition support
+      from the seller.
+    </div>
+  </section>
+
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> This pro forma is based on preliminary assumptions and should be verified against
+    seller financials, tax returns, bookings/deposits, insurance policies, property tax records, maintenance records,
+    floodplain/elevation documents, and attorney-reviewed transaction documents.
+  </div>
+
+  <footer>
+    Hiwassee River Weddings — Updated Pro Forma · Prepared for buyer-side review
+  </footer>
+
+</div>
+</body>
+</html>
